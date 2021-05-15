@@ -2,7 +2,7 @@ package br.com.compilador.analisadorLexico;
 
 import java.util.HashMap;
 
-public class Conversor {
+public class AnalisadorLexico {
     
     /**
      * Recebendo uma tabela e uma palavra, percorre a tabela para descobrir se a palavra está na gramática
