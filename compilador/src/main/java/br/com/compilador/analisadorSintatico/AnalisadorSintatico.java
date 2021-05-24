@@ -11,12 +11,19 @@ public class AnalisadorSintatico {
     public void executa(Pilha pilha, Fila fila) {
 
         this.pilha = pilha;
-        this.fila = fila;
+        this.fila = fila; // array de palavras escritas no codigo de entrada
         HashMap<String, HashMap<String, RegistroTabela>> tabela = this.TabelaSintatica.getTabela();
 
         while(true) {
 
             RegistroTabela registro = tabela.get(this.pilha.getTopo()).get(this.fila.getInicio());
+            
+            String topStack = this.pilha.getTopo();
+            String beginQueue = this.fila.getInicio();
+            
+            // System.out.println("topStack" + topStack);
+            // System.out.println("beginQueue" + beginQueue);
+
             if(registro == null) registro = new RegistroTabela(Açoes.ERRO, null);//registra erro caso registro seja vazio.
 
             switch(registro.getAçoes()) {
@@ -32,7 +39,7 @@ public class AnalisadorSintatico {
                     this.sucesso();
                     return;
                 case ERRO :
-                    this.erro();
+                    this.erro(topStack, beginQueue);
             }
         }
 
@@ -41,7 +48,6 @@ public class AnalisadorSintatico {
     private void empilha(String valorTabela) {
         this.pilha.empilha(this.fila.getInicio());
         this.fila.remove();
-
         this.pilha.empilha(valorTabela);
     }
 
@@ -63,7 +69,9 @@ public class AnalisadorSintatico {
         this.pilha.empilha(registroTabela.getValor());
     }
 
-    private void erro() {
+    private void erro(String topStack, String beginQueue) {
+        System.out.println("- TOPO DA PILHA: " + topStack);
+        System.out.println("- INICIO DA FILA: " + beginQueue);
         throw new RuntimeException("Erro na análise sintática.");
     }
 
